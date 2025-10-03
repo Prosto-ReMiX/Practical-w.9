@@ -1,7 +1,7 @@
 import kotlin.concurrent.thread
 
 fun main() {
-    val thread = Thread {
+    val thread = thread {
         var counter = 0
         try {
             do {

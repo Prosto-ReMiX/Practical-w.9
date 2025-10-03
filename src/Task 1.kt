@@ -1,5 +1,7 @@
+import kotlin.concurrent.thread
+
 fun main() {
-    val thread = Thread {
+    val thread = thread {
         sayMeaw()
     }
     thread.start()

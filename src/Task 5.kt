@@ -1,5 +1,7 @@
+import kotlin.concurrent.thread
+
 fun main() {
-    val thread = Thread {
+    val thread = thread {
         var counter = 0
         try {
             do {
@@ -14,7 +16,7 @@ fun main() {
             println("Поток прибили во сне, сволочи!")
         }
     }
-    val threadKiller = Thread {
+    val threadKiller = thread {
         Thread.sleep(2500)
         println("Щас убью!")
         thread.interrupt()

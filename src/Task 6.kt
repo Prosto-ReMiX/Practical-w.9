@@ -1,3 +1,4 @@
+import kotlin.concurrent.thread
 
 fun ArrayList<Int>.producer() {
     synchronized(this) {
@@ -29,12 +30,12 @@ fun ArrayList<Int>.consumer() {
 fun main() {
     val store = arrayListOf<Int>()
 
-    val thread = Thread{
+    val thread = thread {
         for (i in 1..50) {
             store.producer()
         }
     }
-    val thread1 = Thread {
+    val thread1 = thread {
         for (i in 1..50) {
             store.consumer()
         }

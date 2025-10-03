@@ -1,8 +1,10 @@
+import kotlin.concurrent.thread
+
 fun main() {
-    val firstThread = Thread {
+    val firstThread = thread {
         println("Первый поток запущен")
 
-        val secondThread = Thread {
+        val secondThread = thread {
             try {
                 while (true) {
                     println("  Второй поток работает...")

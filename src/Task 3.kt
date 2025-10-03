@@ -1,6 +1,8 @@
+import kotlin.concurrent.thread
+
 fun main() {
     val threads = Array(5) { i ->
-        Thread { sayHello("Thread $i") }
+        thread { sayHello("Thread $i") }
     }
     threads.forEach { it.start() }
 }
