@@ -7,21 +7,21 @@ class PizzaBox(private val capacity: Int) {
     @Synchronized
     fun put(pizza: String) {
         while (box.size >= capacity) {
-            (this as Object).wait() // ждем, если коробка полная
+            (this as Object).wait()
         }
         box.add(pizza)
         println("🍕 Повар приготовил пиццу: $pizza (в коробке: ${box.size})")
-        (this as java.lang.Object).notifyAll()
+        (this as Object).notify()
     }
 
     @Synchronized
     fun take(): String {
         while (box.isEmpty()) {
-            (this as Object).wait() // ждем, если коробка пустая
+            (this as Object).wait()
         }
         val pizza = box.remove()
         println("🚚 Курьер забрал пиццу: $pizza (в коробке: ${box.size})")
-        (this as java.lang.Object).notifyAll()
+        (this as Object).notify()
         return pizza
     }
 }
@@ -29,7 +29,6 @@ class PizzaBox(private val capacity: Int) {
 fun main() {
     val pizzaBox = PizzaBox(5)
 
-    // Повара
     repeat(2) { id ->
         thread {
             try {
@@ -37,7 +36,7 @@ fun main() {
                 while (!Thread.currentThread().isInterrupted) {
                     pizzaBox.put("Пицца #$pizzaId от повара $id")
                     pizzaId++
-                    Thread.sleep(300) // время приготовления
+                    Thread.sleep(300)
                 }
             }
             catch (_: InterruptedException) {
@@ -46,13 +45,12 @@ fun main() {
         }
     }
 
-    // Курьеры
     repeat(3) { id ->
         thread {
             try {
                 while (!Thread.currentThread().isInterrupted) {
                     pizzaBox.take()
-                    Thread.sleep(500) // время доставки
+                    Thread.sleep(500)
                 }
             }
             catch (_: InterruptedException) {
@@ -61,9 +59,8 @@ fun main() {
         }
     }
 
-    // Работаем 5 секунд
-    Thread.sleep(10000)
-    println("⏹ Пиццерия закрывается!")
+    Thread.sleep(5200)
+    println("\uD83C\uDFDB Пиццерия закрывается!")
 
     // Завершаем все потоки
     Thread.getAllStackTraces().keys
